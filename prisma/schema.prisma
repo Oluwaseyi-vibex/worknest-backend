@@ -30,12 +30,13 @@ model User {
   email    String  @unique
   password String
 
-  createdAt      DateTime        @default(now())
   projects       Project[]
   projectMembers ProjectMember[]
   tasks          Task[]
   messages       Message[]
   files          File[]
+
+  createdAt DateTime @default(now())
 }
 
 model Project {

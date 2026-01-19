@@ -1,9 +1,44 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as authService from "./auth.service";
 import statusCodes from "./../../constants/statusCodes";
 import response from "./../../utils/responseObject";
 
-export const login = async (req: Request, res: Response) => {
+export const register = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userCreated = await authService.register(req.body);
+    return res.status(statusCodes.CREATED).json(
+      response({
+        message: "User created",
+        status: statusCodes.CREATED,
+        success: true,
+        data: userCreated,
+      })
+    );
+  } catch (err) {
+    if (err.message === "USER_EXIST") {
+      return res.status(statusCodes.CONFLICT).json(
+        response({
+          message: "User already exist",
+          status: statusCodes.CONFLICT,
+          success: false,
+          data: {},
+        })
+      );
+    }
+
+    next(err);
+  }
+};
+
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const user = await authService.login(req.body);
 
@@ -12,7 +47,7 @@ export const login = async (req: Request, res: Response) => {
         message: "Login successful",
         status: statusCodes.OK,
         success: true,
-        data: {},
+        data: user,
       })
     );
   } catch (err: any) {
@@ -26,7 +61,6 @@ export const login = async (req: Request, res: Response) => {
         })
       );
     }
-
     if (err.message === "INVALID_EMAIL/PASSWORD") {
       return res.status(statusCodes.BAD_REQUEST).json(
         response({
@@ -37,14 +71,6 @@ export const login = async (req: Request, res: Response) => {
         })
       );
     }
-
-    return res.status(statusCodes.SERVER_ERROR).json(
-      response({
-        message: "Server eror",
-        status: statusCodes.SERVER_ERROR,
-        success: false,
-        data: {},
-      })
-    );
+    next(err);
   }
 };

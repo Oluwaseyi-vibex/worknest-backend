@@ -6,6 +6,7 @@ const statusCodes = {
   UNAUTHORIZED: 401,
   NOTFOUND: 404,
   TOO_MANY_REQUEST: 429,
+  CONFLICT: 409,
 };
 
 export default statusCodes;

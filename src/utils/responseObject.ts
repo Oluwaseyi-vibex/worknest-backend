@@ -2,14 +2,14 @@ interface responseProps {
   message: string;
   status: number;
   success: boolean;
-  data: {};
+  data: any;
 }
 
 export default function response({
   message = "default message",
   status,
   success,
-  data,
+  data = {},
 }: responseProps) {
   return {
     message,

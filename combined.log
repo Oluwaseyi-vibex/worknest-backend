@@ -1,1 +1,4 @@
 {"err":{"clientVersion":"7.2.0","code":"ECONNREFUSED","meta":{"modelName":"User"},"name":"PrismaClientKnownRequestError"},"level":"info","message":"\nInvalid `prisma.user.findUnique()` invocation in\n/Users/chubiy/Desktop/work/WorkNest-Backend/src/modules/auth/auth.service.ts:6:34\n\n  3 import jwt from \"jsonwebtoken\";\n  4 \n  5 async function login(payload: { email: string; password: string }) {\n→ 6   const user = await prisma.user.findUnique(\n","service":"user-service"}
+{"err":{},"level":"error","message":"POST /api/v1/auth/login","timestamp":"2026-01-19T13:18:49.862Z"}
+{"level":"warn","message":"POST /api/v1/auth/login - Unexpected end of JSON input","timestamp":"2026-01-19T13:36:02.430Z"}
+{"level":"warn","message":"POST /api/v1/auth/register - Unexpected end of JSON input","timestamp":"2026-01-19T13:36:55.344Z"}

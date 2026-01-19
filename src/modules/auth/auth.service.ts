@@ -2,8 +2,34 @@ import prisma from "./../../config/db";
 import bcrypt from "bcrypt";
 import { env } from "config/env";
 import jwt, { Secret } from "jsonwebtoken";
-import { email } from "zod";
-import { da } from "zod/v4/locales";
+
+async function register(payload: {
+  name: string;
+  email: string;
+  password: string;
+}) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: payload.email,
+    },
+  });
+
+  if (user) {
+    throw new Error("USER_EXIST");
+  }
+
+  const hashpassword = await bcrypt
+    .hash(payload.password, 10)
+    .then((hash) => hash);
+
+  console.log(hashpassword);
+
+  const newUser = await prisma.user.create({
+    data: { ...payload, password: hashpassword },
+  });
+
+  return newUser;
+}
 
 async function login(payload: { email: string; password: string }) {
   const user = await prisma.user.findUnique({
@@ -39,4 +65,4 @@ async function login(payload: { email: string; password: string }) {
   return data;
 }
 
-export { login };
+export { login, register };

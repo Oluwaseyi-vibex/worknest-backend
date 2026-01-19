@@ -12,8 +12,10 @@ export const initSocket = (server: HttpServer) => {
   });
 
   io.use((socket, next) => {
-    const token = socket.handshake.auth.token || socket.handshake.headers.token;
+    const rawToken =
+      socket.handshake.query.token || socket.handshake.headers.token;
 
+    const token = Array.isArray(rawToken) ? rawToken[0] : rawToken;
     if (!token) return next(new Error("Unauthorized"));
     try {
       const user = jwt.verify(token, env.JWT_SECRET!);
