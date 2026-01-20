@@ -12,7 +12,11 @@ import rootRouter from "./routes";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 app.use(bodyParser.json());
 app.use(apiLimiter);
 app.use(
