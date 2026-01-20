@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import { Server as HttpServer } from "http";
 import jwt from "jsonwebtoken";
 import { env } from "./env";
+import prisma from "./db";
 
 //create a variable to hold 'io'so we can use it anywhere
 let io: Server;
@@ -28,6 +29,29 @@ export const initSocket = (server: HttpServer) => {
 
   io.on("connection", (socket) => {
     console.log("A user connected to WorkNest:", socket.id);
+
+    socket.on("join_project", async (projectId: string) => {
+      if (!projectId) return;
+
+      const userId = socket.data.user.id;
+      const membership = await prisma.projectMember.findUnique({
+        where: {
+          userId_projectId: { userId, projectId },
+        },
+      });
+
+      if (!membership) {
+        console.warn(
+          `Unauthorized join attempt by user ${userId} for project ${projectId}`
+        );
+        return socket.emit("error", {
+          message: "You are not a member of this project",
+        });
+      }
+
+      socket.join(projectId);
+      console.log(`✅ User ${userId} safely joined room: ${projectId}`);
+    });
 
     socket.on("disconnect", (reason) => {
       console.log("User disconnected reason:", reason);

@@ -3,7 +3,6 @@ import { NextFunction, Request, Response } from "express";
 import response from "./../utils/responseObject";
 import jwt from "jsonwebtoken";
 import { env } from "./../config/env";
-import { fa } from "zod/v4/locales";
 
 export default function (req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
@@ -11,7 +10,7 @@ export default function (req: Request, res: Response, next: NextFunction) {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(statusCodes.UNAUTHORIZED).json(
       response({
-        message: "Access dennied",
+        message: "Access denied",
         status: statusCodes.UNAUTHORIZED,
         success: false,
         data: {},
@@ -22,7 +21,8 @@ export default function (req: Request, res: Response, next: NextFunction) {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, env.JWT_EXPIRES_IN);
+    const decoded = jwt.verify(token, env.JWT_SECRET);
+
     (req as any).user = decoded;
 
     next();

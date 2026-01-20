@@ -2,3 +2,6 @@
 {"err":{},"level":"error","message":"POST /api/v1/auth/login","timestamp":"2026-01-19T13:18:49.862Z"}
 {"level":"warn","message":"POST /api/v1/auth/login - Unexpected end of JSON input","timestamp":"2026-01-19T13:36:02.430Z"}
 {"level":"warn","message":"POST /api/v1/auth/register - Unexpected end of JSON input","timestamp":"2026-01-19T13:36:55.344Z"}
+{"level":"warn","message":"POST /api/v1/project/create - Unexpected end of JSON input","timestamp":"2026-01-19T16:50:56.869Z"}
+{"level":"warn","message":"POST /api/v1/project/create - Unexpected end of JSON input","timestamp":"2026-01-19T16:52:04.647Z"}
+{"err":{},"level":"error","message":"POST /api/v1/project/create","timestamp":"2026-01-19T22:19:41.594Z"}
